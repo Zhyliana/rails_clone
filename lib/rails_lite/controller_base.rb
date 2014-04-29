@@ -43,6 +43,7 @@ class ControllerBase
   # pass the rendered html to render_content
   def render(template_name)
     template = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
+    puts ERB.new(template)
     render_content(template, 'text/html')
   end
 
