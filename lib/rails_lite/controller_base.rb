@@ -43,10 +43,17 @@ class ControllerBase
   # pass the rendered html to render_content
   def render(template_name)
     template = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
-    puts ERB.new(template)
-    render_content(template, 'text/html')
+    view = ERB.new(template).result
+    render_content(view, 'text/html')
   end
+  #read into template_name (views/controller)
+  #pass into all one string (underscore)
+  #
+  
+  # pass to erb
+  # 
 
+  # method exposing a `Session` object
   def session
   end
 
