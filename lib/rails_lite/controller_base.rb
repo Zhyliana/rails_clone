@@ -18,13 +18,10 @@ class ControllerBase
   # set the responses content type to the given type
   # later raise an error if the developer tries to double render
   def render_content(content, type)
-    if @already_built_response
-      raise "error"
-    else
-      res.content_type = type
-      res.body = content
-      @already_built_response = true
-    end
+    raise "error" if @already_built_response
+    res.content_type = type
+    res.body = content
+    @already_built_response = true
   end
 
   # helper method to alias @already_built_response
@@ -34,12 +31,10 @@ class ControllerBase
 
   # set the response status code and header
   def redirect_to(url)
-    if @already_built_response
-      raise "error"
-    else
-      res.status = 302
-      res["Location"] = url
-    end
+    raise "error" if @already_built_response
+    res.status = 302
+    res["Location"] = url
+    @already_built_response = true
   end
 
   # use ERB and binding to evaluate templates
