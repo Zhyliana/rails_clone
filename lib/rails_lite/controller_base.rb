@@ -34,8 +34,12 @@ class ControllerBase
 
   # set the response status code and header
   def redirect_to(url)
-    res.status = 302
-    res["Location"] = url
+    if @already_built_response
+      raise "error"
+    else
+      res.status = 302
+      res["Location"] = url
+    end
   end
 
   # use ERB and binding to evaluate templates
