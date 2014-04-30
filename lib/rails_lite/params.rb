@@ -10,9 +10,11 @@ class Params
   end
 
   def [](key)
+    @params[key]
   end
 
   def permit(*keys)
+    
   end
 
   def require(key)
@@ -29,14 +31,12 @@ class Params
   private
   # this should return deeply nested hash
   # argument format
-  user[address][street]=main&user[address][zip]=89436
-  [[user[address][street], main],[user[address][zip], 89436]]
+  # user[address][street]=main&user[address][zip]=89436
   # should return
   # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
-  parse_www_encoded_form( "user[address][street]=main&user[address][zip]=89436")
   def parse_www_encoded_form( www_encoded_form)
     nested_hash = {}
-    
+      
     URI.decode_www_form(www_encoded_form).each do |pair|      
       array_of_keys = parse_key(pair[0])
       
@@ -53,7 +53,7 @@ class Params
       level_hash[array_of_keys.first] = pair[1]
     end
     
-     nested_hash  
+     @params.merge!(nested_hash)
   end
 
   # this should return an array
