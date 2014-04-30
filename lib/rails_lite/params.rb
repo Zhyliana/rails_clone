@@ -6,7 +6,12 @@ class Params
   # 2. post body
   # 3. route params
   def initialize(req, route_params = {})
-    @params = route_params
+    @permitted = []
+    @params = {}
+    @params.merge!(route_params)
+    
+    @params.merge!(parse_www_encoded_form(req.body)) if req.body
+    @params.merge!(parse_www_encoded_form(req.query_string)) if req.query_string
   end
 
   def [](key)
@@ -14,16 +19,21 @@ class Params
   end
 
   def permit(*keys)
-    
+    @permitted += keys
   end
 
   def require(key)
+    unless @params.keys.include?(key)
+       raise AttributeNotFoundError
+     end
   end
 
   def permitted?(key)
+    @permitted.include?(key)
   end
 
   def to_s
+    JSON.parse(@params)
   end
 
   class AttributeNotFoundError < ArgumentError; end;
@@ -53,13 +63,17 @@ class Params
       level_hash[array_of_keys.first] = pair[1]
     end
     
-     @params.merge!(nested_hash)
+     nested_hash
   end
 
   # this should return an array
   # user[address][street] should return ['user', 'address', 'street']
   def parse_key(key)
-    key.split(/\]\[|\[|\]/)
+    if key.empty?
+      key
+    else
+      key.split(/\]\[|\[|\]/)
+    end
   end
 end
 
