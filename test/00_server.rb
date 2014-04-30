@@ -14,29 +14,16 @@ class MyController < ControllerBase
     # render_content("hello world!", "text/html")
     
     # after you have template rendering, uncomment:
-   # render :show
+   render :show
 
     # after you have sessions going, uncomment:
-#    session["count"] ||= 0
-#    session["count"] += 1
-#    render :counting_show
+   # session["count"] ||= 0
+   # session["count"] += 1
+   # render :counting_show
   end
 end
 
 server.mount_proc '/' do |req, res|
-  # if req.path == "/"
-  #   count = 0
-  #   
-  #   req.cookies.each do |cookie|
-  #     if cookie.name = "my_count"
-  #       count = Integer(cookie.value)
-  #     end
-  #   end
-  #   
-  #   res.body = "#{count}"
-  #   res.cookies << WEBrick::Cookie.new("my_count", (count + 1).to_s)
-  # end
-  
   MyController.new(req, res).go
 end
 
