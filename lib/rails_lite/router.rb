@@ -17,8 +17,7 @@ class Route
   # instantiate controller and call controller action
   def run(req, res)
     p @pattern
- 
-    # Route.new(@pattern, @http_method, @controller_class, @action_name).run(req, res)
+    @controller_class.new(req, res, @params).invoke_action(action_name)
   end
 end
 
